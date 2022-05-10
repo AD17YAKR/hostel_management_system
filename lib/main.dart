@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/utils/colors.dart';
 import 'package:hostel_mangement_system/views/landing_page.dart';
 
 void main() {
@@ -22,10 +22,9 @@ class _MyAppState extends State<MyApp> {
       home: LandingPage(),
       theme: ThemeData(
         primaryColor: Colors.grey,
-        
         appBarTheme: AppBarTheme(color: Colors.teal),
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: ThemeData.dark().textTheme,
+        scaffoldBackgroundColor: backGroundColor,
+        textTheme: ThemeData.light().textTheme,
         buttonTheme: ButtonThemeData(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),

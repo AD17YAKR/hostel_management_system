@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 
 import 'Button.dart';
 import 'InputField.dart';
@@ -18,7 +18,7 @@ class InputWrapper extends StatelessWidget {
             ),
             child: InputField(),
           ),
-          SizedBox(height: 40,),
+          SizedBox(height: 40,),/*  */
           Text(
             "Forgot Password?",
             style: TextStyle(color: Colors.grey),
@@ -29,4 +29,4 @@ class InputWrapper extends StatelessWidget {
       ),
     );
   }
-}
+} */

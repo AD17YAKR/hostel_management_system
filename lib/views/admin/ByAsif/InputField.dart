@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget{
   @override
@@ -9,7 +9,7 @@ class InputField extends StatelessWidget{
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Colors.grey[200])
+              bottom: BorderSide(color: Colors.grey![200])
             )
           ),
           child: TextField(
@@ -38,4 +38,4 @@ class InputField extends StatelessWidget{
       ],
     );
   }
-}
+} */
