@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/helper/shared_preferences.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
-import 'package:page_transition/page_transition.dart';
 
 class AdminSignUp extends StatefulWidget {
   const AdminSignUp({Key? key}) : super(key: key);
@@ -17,6 +18,25 @@ class _AdminSignUpState extends State<AdminSignUp> {
   TextEditingController collegeNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+  HelperFunctions helperFunctions = HelperFunctions();
+  createNewAdmin() async {
+    print("started");
+    final results = await dataBaseMethods.registerAdmin(
+      collegeHostelNameController.text,
+      collegeHostelNameController.text,
+      passwordController.text,
+      passwordController.text,
+    );
+    String jwtToken = results['jwtToken'] ?? "failed";
+    helperFunctions.saveAdminToken(jwtToken);
+    if (jwtToken == "failed")
+      return Get.snackbar("", "Some Values missing");
+    else
+      return Get.to(AdminHomePage());
+    print(jwtToken);
+    // print("results");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +47,6 @@ class _AdminSignUpState extends State<AdminSignUp> {
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
         leading: IconButton(
-          // borderColor: Colors.transparent,
-          // borderRadius: 30,
-          // borderWidth: 1,
-          // buttonSize: 60,
           icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -43,7 +59,6 @@ class _AdminSignUpState extends State<AdminSignUp> {
         title: Text(
           'Back To Admin Login',
           style: TextStyle(color: Colors.black),
-          // style: FlutterFlowTheme.of(context).bodyText1,
         ),
         actions: [],
         centerTitle: true,
@@ -295,7 +310,10 @@ class _AdminSignUpState extends State<AdminSignUp> {
                     padding: EdgeInsetsDirectional.fromSTEB(40, 24, 40, 0),
                     child: ElevatedButton(
                       onPressed: () async {
-                        Get.offAll(() => AdminHomePage());
+                        print("hey there how its going");
+                        createNewAdmin();
+
+                        // Get.offAll(() => AdminHomePage());
                       },
                       child: Text(
                         'Sign Up',

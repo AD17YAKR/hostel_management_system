@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/helper/shared_preferences.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
 import 'package:hostel_mangement_system/views/admin/adminSignup.dart';
 
@@ -16,6 +18,23 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
   TextEditingController idNoController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+  HelperFunctions helperFunctions = HelperFunctions();
+  loginAdmin() async {
+    print("started");
+    final results = await dataBaseMethods.loginAdmin(
+      idNoController.text,
+      passwordController.text,
+    );
+    String jwtToken = results['jwtToken'] ?? "failed";
+    helperFunctions.saveAdminToken(jwtToken);
+    if (jwtToken == "failed")
+      return Get.snackbar("", "Some Values missing");
+    else
+      return Get.to(AdminHomePage());
+    print(jwtToken);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +255,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
                         padding: EdgeInsetsDirectional.fromSTEB(40, 24, 40, 0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            Get.offAll(() => AdminHomePage());
+                            loginAdmin();
                           },
                           child: Text(
                             'Log In',

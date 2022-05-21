@@ -55,25 +55,25 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
       roomNo: "-1",
     ),
     Student(
-      name: "Slide 6",
+      name: "Chinmoy Hembram",
       personalNumber: "0123456798",
       guardianNumber: "9876543210",
       isVeg: false,
       roomNo: "-1",
     ),
     Student(
-      name: "Slide 7",
+      name: "Manas Swain",
       personalNumber: "0123456798",
       guardianNumber: "9876543210",
       isVeg: false,
-      roomNo: "-1",
+      roomNo: "88",
     ),
     Student(
-      name: "Slide 8",
+      name: "Ashutosh Tiwari",
       personalNumber: "0123456798",
       guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "-1",
+      isVeg: true,
+      roomNo: "09",
     )
   ];
   @override
