@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hostel_mangement_system/helper/shared_preferences.dart';
+import 'package:hostel_mangement_system/models/token.dart';
 import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
 import 'package:hostel_mangement_system/views/admin/adminSignup.dart';
@@ -19,7 +20,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
   DataBaseMethods dataBaseMethods = DataBaseMethods();
-  HelperFunctions helperFunctions = HelperFunctions();
+  // HelperFunctions helperFunctions = HelperFunctions();
   loginAdmin() async {
     print("started");
     final results = await dataBaseMethods.loginAdmin(
@@ -27,12 +28,17 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
       passwordController.text,
     );
     String jwtToken = results['jwtToken'] ?? "failed";
-    helperFunctions.saveAdminToken(jwtToken);
+    // String id = results['id'] ?? "failed";
+    // helperFunctions.saveAdminToken(jwtToken);
+    if (idNoController.text.isEmpty) idNoController.text = "jLwPOxHV";
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else
-      return Get.to(AdminHomePage());
-    print(jwtToken);
+      return Get.to(() => AdminHomePage(
+            adminToken:
+                Token(jwtToken: jwtToken, idNumber: idNoController.text),
+          ));
+    // print(jwtToken);
   }
 
   @override
@@ -52,11 +58,6 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
           onPressed: () {
             Get.back();
           },
-        ),
-        title: Text(
-          'Back To Homepage',
-          style: GoogleFonts.poppins(fontSize: 22, color: Colors.black),
-          // style: FlutterFlowTheme.of(context).bodyText1,
         ),
         actions: [],
         centerTitle: true,
@@ -295,7 +296,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
                           size: 30,
                         ),
                         onPressed: () {
-                          Get.to(AdminSignUp());
+                          Get.to(() => AdminSignUp());
                         },
                       ),
                     ],

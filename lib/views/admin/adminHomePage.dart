@@ -2,13 +2,18 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/models/token.dart';
+
 import 'package:hostel_mangement_system/views/landing_page.dart';
 
 import '../../models/student.dart';
 
 class AdminHomePage extends StatefulWidget {
-  const AdminHomePage({Key? key}) : super(key: key);
-
+  final Token adminToken;
+  const AdminHomePage({
+    Key? key,
+    required this.adminToken,
+  }) : super(key: key);
   @override
   State<AdminHomePage> createState() => AdminLogInSignUpState();
 }
@@ -82,7 +87,6 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
@@ -142,6 +146,22 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
               children: [
                 Text(
                   'Old Boys Hostel',
+                  style: GoogleFonts.outfit(
+                    color: Color(0xFF57636C),
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  'Id Number : ' + widget.adminToken.idNumber,
                   style: GoogleFonts.outfit(
                     color: Color(0xFF57636C),
                     fontSize: 14,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hostel_mangement_system/helper/shared_preferences.dart';
 import 'package:hostel_mangement_system/utils/colors.dart';
 import 'package:hostel_mangement_system/views/landing_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
 }
 
@@ -15,6 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  HelperFunctions helperFunction = HelperFunctions();
+// bool isAdminLoggedIn=helperFunction.saveAdminToken();;
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

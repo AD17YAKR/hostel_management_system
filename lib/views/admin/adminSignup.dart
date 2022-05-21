@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hostel_mangement_system/helper/shared_preferences.dart';
+import 'package:hostel_mangement_system/models/token.dart';
 import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
 
@@ -29,12 +30,16 @@ class _AdminSignUpState extends State<AdminSignUp> {
       passwordController.text,
     );
     String jwtToken = results['jwtToken'] ?? "failed";
+    String id = results['id'] ?? "failed";
     helperFunctions.saveAdminToken(jwtToken);
+    print(jwtToken);
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else
-      return Get.to(AdminHomePage());
-    print(jwtToken);
+      return Get.to(() => AdminHomePage(
+            adminToken: Token(jwtToken: jwtToken, idNumber: id),
+          ));
+
     // print("results");
   }
 
@@ -55,10 +60,6 @@ class _AdminSignUpState extends State<AdminSignUp> {
           onPressed: () async {
             Get.back();
           },
-        ),
-        title: Text(
-          'Back To Admin Login',
-          style: TextStyle(color: Colors.black),
         ),
         actions: [],
         centerTitle: true,

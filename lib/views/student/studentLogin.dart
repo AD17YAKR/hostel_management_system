@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/utils/colors.dart';
-import 'package:hostel_mangement_system/views/admin/adminSignup.dart';
 import 'package:hostel_mangement_system/views/student/studentHomePage.dart';
 import 'package:hostel_mangement_system/views/student/studentSignup.dart';
 
@@ -18,6 +18,25 @@ class _StudentLogInSignUpState extends State<StudentLogInSignUp> {
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
   TextEditingController phoneNoController = TextEditingController();
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+
+  logInStudent() async {
+    final results = await dataBaseMethods.logInStudent(
+      phoneNoController.text,
+      passwordController.text,
+    );
+    String jwtToken = results['jwtToken'] ?? "failed";
+    // String id = results['id'] ?? "failed";
+    // helperFunctions.saveAdminToken(jwtToken);
+    print(jwtToken);
+    if (jwtToken == "failed")
+      return Get.snackbar("", "Some Values missing");
+    else
+      return Get.to(() => StudentHomePage(
+          // adminToken: Token(jwtToken: jwtToken, idNumber: id),
+          ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +53,6 @@ class _StudentLogInSignUpState extends State<StudentLogInSignUp> {
           onPressed: () async {
             Get.back();
           },
-        ),
-        title: Text(
-          'Back To Homepage',
-          style: TextStyle(color: Colors.black),
         ),
         actions: [],
         centerTitle: true,
@@ -243,7 +258,8 @@ class _StudentLogInSignUpState extends State<StudentLogInSignUp> {
                         padding: EdgeInsetsDirectional.fromSTEB(40, 24, 40, 0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            Get.offAll(() => StudentHomePage());
+                            logInStudent();
+                            // Get.offAll(() => StudentHomePage());
                           },
                           child: Text(
                             'Log In',

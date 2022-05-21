@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-import 'package:hostel_mangement_system/views/admin/admin.dart';
+import 'package:hostel_mangement_system/views/admin/adminLogin.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
-import 'package:hostel_mangement_system/views/student/student.dart';
+import 'package:hostel_mangement_system/views/student/studentLogin.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);

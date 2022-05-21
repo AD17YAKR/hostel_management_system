@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/student/studentHomePage.dart';
 
 class StudentSignUp extends StatefulWidget {
@@ -12,12 +13,35 @@ class StudentSignUp extends StatefulWidget {
 
 class StudentSignUpState extends State<StudentSignUp> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController nameController = TextEditingController();
   TextEditingController hostelCodeController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController roomNoController = TextEditingController();
   TextEditingController parentPhoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+  createStudent() async {
+    print("started");
+    final results = await dataBaseMethods.registerStudent(
+      nameController.text,
+      passwordController.text,
+      hostelCodeController.text,
+      phoneNoController.text,
+      parentPhoneController.text,
+      roomNoController.text,
+    );
+    String jwtToken = results['jwtToken'] ?? "failed";
+    // String id = results['id'] ?? "failed";
+    // helperFunctions.saveAdminToken(jwtToken);
+    print(jwtToken);
+    if (jwtToken == "failed")
+      return Get.snackbar("", "Some Values missing");
+    else
+      return Get.to(() => StudentHomePage(
+          // adminToken: Token(jwtToken: jwtToken, idNumber: id),
+          ));
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +145,7 @@ class StudentSignUpState extends State<StudentSignUp> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: TextFormField(
-                              controller: phoneNoController,
+                              controller: nameController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelText: 'Name',
@@ -489,7 +513,9 @@ class StudentSignUpState extends State<StudentSignUp> {
                               EdgeInsetsDirectional.fromSTEB(40, 24, 40, 0),
                           child: ElevatedButton(
                             onPressed: () async {
-                              Get.offAll(() => StudentHomePage());
+                              createStudent();
+                              // Get.to();
+                              // Get.offAll(() => StudentHomePage());
                             },
                             child: Text(
                               'Sign Up',
