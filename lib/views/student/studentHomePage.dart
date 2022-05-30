@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/utils/colors.dart';
 import 'package:hostel_mangement_system/views/landing_page.dart';
 
-class StudentHomePage extends StatefulWidget {
-  const StudentHomePage({Key? key}) : super(key: key);
+import '../../models/student.dart';
 
+class StudentHomePage extends StatefulWidget {
+  final String jwtToken;
+
+  const StudentHomePage({Key? key, required this.jwtToken}) : super(key: key);
   @override
   State<StudentHomePage> createState() => _StudentHomePageState();
 }
@@ -18,6 +22,29 @@ class _StudentHomePageState extends State<StudentHomePage> {
   bool isPresent = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isVeg = false;
+  String? studentId;
+  Student curStudent = Student();
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+
+  @override
+  void initState() {
+    getStudentData();
+    // studentId = "Bearer " + widget.jwtToken;
+    super.initState();
+  }
+
+  getStudentData() async {
+    final results = await dataBaseMethods.getStudentData
+    (widget.jwtToken);
+    curStudent.name = results['name'];
+    curStudent.isVeg = results['foodPrefarence'] == "veg" ? true : false;
+    curStudent.isPresent = results['presentStatus'] == "veg" ? true : false;
+    curStudent.personalNumber = results['personalNumber'];
+    curStudent.guardianNumber = results['guardianNumber'];
+    curStudent.roomNo = results['roomNo'];
+    // curStudent.isBlank
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

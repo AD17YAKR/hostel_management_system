@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Student {
-  final String? name;
-  final String? roomNo;
-  final String? guardianNumber;
-  final String? personalNumber;
-  final bool? isVeg;
+  late final String? name;
+  late final String? roomNo;
+  late final String? guardianNumber;
+  late final String? personalNumber;
+  late final bool? isVeg;
+  late final bool? isPresent;
   Student({
     this.name,
     this.roomNo,
     this.guardianNumber,
     this.personalNumber,
     this.isVeg,
+    this.isPresent,
   });
 }

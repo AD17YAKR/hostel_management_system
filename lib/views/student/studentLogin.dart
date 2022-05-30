@@ -32,9 +32,9 @@ class _StudentLogInSignUpState extends State<StudentLogInSignUp> {
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else
-      return Get.to(() => StudentHomePage(
-          // adminToken: Token(jwtToken: jwtToken, idNumber: id),
-          ));
+      return Get.to(
+        () => StudentHomePage(jwtToken: jwtToken),
+      );
   }
 
   @override

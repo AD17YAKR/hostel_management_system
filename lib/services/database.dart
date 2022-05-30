@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 
 Map<String, String> headersMap = {
   'Content-Type': 'application/json; charset=UTF-8',
-  // 'Authorization': Constants.myToken ?? '',
+  // 'Authorization': ,
 };
 
 class DataBaseMethods {
-  String baseUrl = "http://192.168.0.129:3000";
+  String baseUrl = "http://172.16.222.201:3000";
 
 //
 //
@@ -28,7 +28,7 @@ class DataBaseMethods {
         headers: headersMap,
       );
       result = jsonDecode(response.body);
-      print(result);
+      // print(result);
       return result;
     } catch (e) {
       print(e);
@@ -80,7 +80,7 @@ class DataBaseMethods {
         headers: headersMap,
       );
       result = jsonDecode(response.body);
-      print(result);
+      // print(result);
       return result;
     } catch (e) {
       print(e);
@@ -103,6 +103,33 @@ class DataBaseMethods {
         headers: headersMap,
       );
       result = jsonDecode(response.body);
+      // print(result);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
+  Future<dynamic> getStudentData(jwtToken) async {
+    String endPoint = '/student';
+    String finalUrl = baseUrl + endPoint;
+    Map<String, dynamic> loginDetails = {
+      "personalNumber": "6290949425",
+      "password": "password"
+    };
+    var result;
+    try {
+      final response = await http.get(
+        Uri.parse(finalUrl),
+        // body: jsonEncode(loginDetails),
+        headers: {
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODk1MjI3YWY1NzNhZTE0YWNhODIxZCIsImlhdCI6MTY1MzI4NTk2N30.zi6YzX9QpPhEyH7A0vG-6SHl6scWYM7Pzo0j0aMGX7g",
+        },
+      );
+      result = jsonDecode(response.body);
+      print("Over here");
       print(result);
       return result;
     } catch (e) {
@@ -110,6 +137,33 @@ class DataBaseMethods {
       return "Not Working";
     }
   }
+
+  Future<dynamic> getAdminData(jwtToken) async {
+    String endPoint = '/admin/info';
+    String finalUrl = baseUrl + endPoint;
+    /* Map<String, dynamic> loginDetails = {
+      "personalNumber": "6290949425",
+      "password": "password"
+    }; */
+    var result;
+    try {
+      final response = await http.get(
+        Uri.parse(finalUrl),
+        headers: {
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImpMd1BPeEhWIiwiaWF0IjoxNjUzMzkyMjUyfQ.hXj5fa-XZuHQZ5_Vga2JYiaUCpHb7UfDVOP4XdvvQ7Y",
+        },
+      );
+      result = jsonDecode(response.body);
+      print("Over here");
+      print(result);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
   /*  Future<dynamic> getAdminData() async {
     String endPoint = '/admin/login';
     String finalUrl = baseUrl + endPoint;
@@ -126,7 +180,9 @@ class DataBaseMethods {
         headers: headersMap,
       );
       result = jsonDecode(response.body);
-      print(result);
+      
+      
+      ;
       return result;
     } catch (e) {
       print(e);

@@ -38,9 +38,7 @@ class StudentSignUpState extends State<StudentSignUp> {
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else
-      return Get.to(() => StudentHomePage(
-          // adminToken: Token(jwtToken: jwtToken, idNumber: id),
-          ));
+      return Get.to(() => StudentHomePage(jwtToken: jwtToken));
   }
 
   Widget build(BuildContext context) {
@@ -63,10 +61,6 @@ class StudentSignUpState extends State<StudentSignUp> {
           onPressed: () async {
             Get.back();
           },
-        ),
-        title: Text(
-          'Back To Student Login',
-          style: TextStyle(color: Colors.black),
         ),
         actions: [],
         centerTitle: true,

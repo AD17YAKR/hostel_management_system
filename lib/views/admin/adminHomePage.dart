@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hostel_mangement_system/models/token.dart';
+import 'package:hostel_mangement_system/services/database.dart';
 
 import 'package:hostel_mangement_system/views/landing_page.dart';
 
@@ -20,70 +21,21 @@ class AdminHomePage extends StatefulWidget {
 
 class AdminLogInSignUpState extends State<AdminHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController idNoController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
-  List<Student> studentData = [
-    Student(
-      name: "Aditya Kumar Singh",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: true,
-      roomNo: "41",
-    ),
-    Student(
-      name: "Md Asif Anasry",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "09",
-    ),
-    Student(
-      name: "Souvik Mondal",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "-1",
-    ),
-    Student(
-      name: "Dipanjan Dutta",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: true,
-      roomNo: "39",
-    ),
-    Student(
-      name: "Aditi Saha",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "-1",
-    ),
-    Student(
-      name: "Chinmoy Hembram",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "-1",
-    ),
-    Student(
-      name: "Manas Swain",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: false,
-      roomNo: "88",
-    ),
-    Student(
-      name: "Ashutosh Tiwari",
-      personalNumber: "0123456798",
-      guardianNumber: "9876543210",
-      isVeg: true,
-      roomNo: "09",
-    )
-  ];
+  DataBaseMethods dataBaseMethods = DataBaseMethods();
+  String? vegStudents="";
+  String? nonVegStudents;
+
+  List<Student> studentData = [];
   @override
   void initState() {
     super.initState();
+    getAdminData();
+  }
+
+  getAdminData() async {
+    final results = await dataBaseMethods.getAdminData(widget.adminToken);
+    vegStudents = results["vegCount"] ?? "Error";
   }
 
   @override
@@ -186,7 +138,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                   ),
                 ),
                 Text(
-                  '2',
+                  vegStudents!,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.outfit(
                     // fontFamily: 'Outfit',
