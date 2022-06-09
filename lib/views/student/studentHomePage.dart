@@ -20,29 +20,33 @@ class _StudentHomePageState extends State<StudentHomePage> {
   String? choiceChipsValue2;
   double ccheight = 120;
   bool isPresent = true;
+  String name = "";
+  String personalNumber = "";
+  String guardianNumber = "";
+  String roomNo = "";
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isVeg = false;
   String? studentId;
-  Student curStudent = Student();
+  String collegeName = "";
+
   DataBaseMethods dataBaseMethods = DataBaseMethods();
+  getStudentData() async {
+    final results = await dataBaseMethods.getStudentData(widget.jwtToken);
+    name = results['name'];
+    // print(namessss);
+    isVeg = results['foodPrefarence'] == "veg" ? true : false;
+    isPresent = results['presentStatus'] == "present" ? true : false;
+    personalNumber = results['personalNumber'];
+    guardianNumber = results['guardianNumber'];
+    roomNo = results['roomNo'].toString();
+    // curStudent.isBlank
+  }
 
   @override
   void initState() {
     getStudentData();
     // studentId = "Bearer " + widget.jwtToken;
     super.initState();
-  }
-
-  getStudentData() async {
-    final results = await dataBaseMethods.getStudentData
-    (widget.jwtToken);
-    curStudent.name = results['name'];
-    curStudent.isVeg = results['foodPrefarence'] == "veg" ? true : false;
-    curStudent.isPresent = results['presentStatus'] == "veg" ? true : false;
-    curStudent.personalNumber = results['personalNumber'];
-    curStudent.guardianNumber = results['guardianNumber'];
-    curStudent.roomNo = results['roomNo'];
-    // curStudent.isBlank
   }
 
   @override
@@ -66,7 +70,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
               child: Text(
-                'Aditya',
+                name,
                 style: GoogleFonts.outfit(
                   // fontFamily: 'Outfit',
                   color: Colors.black,
@@ -178,7 +182,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          '41',
+                                          roomNo,
                                           style: GoogleFonts.outfit(
                                             // fontFamily: 'Outfit',
                                             color: Color.fromARGB(
@@ -448,7 +452,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 12, 0, 0),
                                           child: Text(
-                                            '0123456789',
+                                            personalNumber,
                                             style: GoogleFonts.outfit(
                                               // fontFamily: 'Outfit',
                                               color: Color(0xFF0F1113),
@@ -485,7 +489,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 12, 0, 0),
                                           child: Text(
-                                            '9876543210',
+                                            guardianNumber,
                                             style: GoogleFonts.outfit(
                                               // fontFamily: 'Outfit',
                                               color: Color(0xFF0F1113),

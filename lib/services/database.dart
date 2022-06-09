@@ -7,7 +7,7 @@ Map<String, String> headersMap = {
 };
 
 class DataBaseMethods {
-  String baseUrl = "http://172.16.222.201:3000";
+  String baseUrl = "http://192.168.0.109:3000";
 
 //
 //
@@ -129,7 +129,7 @@ class DataBaseMethods {
         },
       );
       result = jsonDecode(response.body);
-      print("Over here");
+      // print("Over here");
       print(result);
       return result;
     } catch (e) {

@@ -26,8 +26,6 @@ class _StudentLogInSignUpState extends State<StudentLogInSignUp> {
       passwordController.text,
     );
     String jwtToken = results['jwtToken'] ?? "failed";
-    // String id = results['id'] ?? "failed";
-    // helperFunctions.saveAdminToken(jwtToken);
     print(jwtToken);
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");

@@ -23,8 +23,8 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool passwordVisibility = false;
   DataBaseMethods dataBaseMethods = DataBaseMethods();
-  String? vegStudents="";
-  String? nonVegStudents;
+  String vegStudents = "";
+  String nonVegStudents = "";
 
   List<Student> studentData = [];
   @override
@@ -35,7 +35,19 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
 
   getAdminData() async {
     final results = await dataBaseMethods.getAdminData(widget.adminToken);
-    vegStudents = results["vegCount"] ?? "Error";
+    vegStudents = await results["vegCount"].toString();
+    nonVegStudents = await results["nonVegCount"].toString();
+    final studentDatafromServer = await results['studentInfo'];
+    for (int i = 0; i <=studentDatafromServer.length; i++) {
+      studentData[i].name = studentDatafromServer['name'];
+      studentData[i].roomNo = studentDatafromServer['roomNo'].toString();
+      studentData[i].guardianNumber =
+          studentDatafromServer['guardianNumber'].toString();
+      studentData[i].personalNumber = studentDatafromServer['personalNumber'];
+      studentData[i].isVeg = studentDatafromServer['foodPrefarence'] == "veg";
+      studentData[i].isPresent = studentDatafromServer['present'] == "present";
+    }
+    // print(studentDatas.length);
   }
 
   @override
@@ -75,7 +87,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
       body: Column(
         // mainAxisSize: MainAxisSize.max,
         children: [
-          Padding(
+          /*  Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -90,8 +102,8 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                 ),
               ],
             ),
-          ),
-          Padding(
+          ), */
+          /*  Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -106,7 +118,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                 ),
               ],
             ),
-          ),
+          ), */
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
@@ -138,7 +150,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                   ),
                 ),
                 Text(
-                  vegStudents!,
+                  vegStudents,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.outfit(
                     // fontFamily: 'Outfit',
@@ -165,7 +177,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                   ),
                 ),
                 Text(
-                  '1',
+                  nonVegStudents,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.outfit(
                     // fontFamily: 'Outfit',
@@ -196,6 +208,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   }
 
   Widget StudentCard(Student students) {
+    print(students);
     String? name = students.name ?? "Error";
     bool? isVeg = students.isVeg ?? false;
     String? personalNumber = students.personalNumber ?? "Error";
