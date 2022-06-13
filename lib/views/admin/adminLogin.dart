@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hostel_mangement_system/helper/shared_preferences.dart';
 import 'package:hostel_mangement_system/models/token.dart';
 import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
@@ -20,7 +19,6 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
   DataBaseMethods dataBaseMethods = DataBaseMethods();
-  // HelperFunctions helperFunctions = HelperFunctions();
   loginAdmin() async {
     print("started");
     final results = await dataBaseMethods.loginAdmin(
@@ -28,9 +26,6 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
       passwordController.text,
     );
     String jwtToken = results['jwtToken'] ?? "failed";
-    // String id = results['id'] ?? "failed";
-    // helperFunctions.saveAdminToken(jwtToken);
-    if (idNoController.text.isEmpty) idNoController.text = "jLwPOxHV";
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else

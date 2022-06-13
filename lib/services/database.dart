@@ -6,13 +6,14 @@ Map<String, String> headersMap = {
   // 'Authorization': ,
 };
 
+//4CgEC5y0
 class DataBaseMethods {
-  String baseUrl = "http://192.168.0.109:3000";
+  String baseUrl = "http://192.168.182.246:3000";
 
 //
 //
-  Future<dynamic> registerAdmin(
-      clgName, hostelName, password, confirmPassword) async {
+  Future<dynamic> registerAdmin(String clgName, String hostelName,
+      String password, String confirmPassword) async {
     String endPoint = '/admin';
     String finalUrl = baseUrl + endPoint;
     Map<String, dynamic> registerDetails = {
@@ -36,13 +37,13 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> loginAdmin(id, password) async {
+  Future<dynamic> loginAdmin(String id, String password) async {
     String endPoint = '/admin/login';
     String finalUrl = baseUrl + endPoint;
     Map<String, dynamic> loginDetails = {
       // "id": id.toString(),
-      "id": "jLwPOxHV",
-      "password": "password",
+      "id": id,
+      "password": password,
     };
     var result;
     try {
@@ -60,17 +61,23 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> registerStudent(name, phoneNumber, hostelCode, roomNumber,
-      guardianPhoneNumber, password) async {
+  Future<dynamic> registerStudent(
+    String name,
+    String phoneNumber,
+    String hostelCode,
+    int roomNumber,
+    String guardianPhoneNumber,
+    String password,
+  ) async {
     String endPoint = '/student';
     String finalUrl = baseUrl + endPoint;
     Map<String, dynamic> loginDetails = {
-      "name": "name",
-      "password": "password",
-      "hostelID": "jLwPOxHV",
-      "personalNumber": "6290949425",
-      "guardianNumber": "6290438787",
-      "roomNo": 41,
+      "name": name,
+      "password": password,
+      "hostelID": hostelCode,
+      "personalNumber": phoneNumber,
+      "guardianNumber": guardianPhoneNumber,
+      "roomNo": roomNumber,
     };
     var result;
     try {
@@ -88,12 +95,12 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> logInStudent(phoneNumber, password) async {
+  Future<dynamic> logInStudent(String phoneNumber, String password) async {
     String endPoint = '/student/login';
     String finalUrl = baseUrl + endPoint;
     Map<String, dynamic> loginDetails = {
-      "personalNumber": "6290949425",
-      "password": "password"
+      "personalNumber": phoneNumber,
+      "password": password,
     };
     var result;
     try {
@@ -111,21 +118,20 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> getStudentData(jwtToken) async {
+  Future<dynamic> getStudentData(String jwtToken) async {
     String endPoint = '/student';
     String finalUrl = baseUrl + endPoint;
-    Map<String, dynamic> loginDetails = {
+    /*   Map<String, dynamic> loginDetails = {
       "personalNumber": "6290949425",
       "password": "password"
-    };
+    }; */
     var result;
     try {
       final response = await http.get(
         Uri.parse(finalUrl),
         // body: jsonEncode(loginDetails),
         headers: {
-          "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODk1MjI3YWY1NzNhZTE0YWNhODIxZCIsImlhdCI6MTY1MzI4NTk2N30.zi6YzX9QpPhEyH7A0vG-6SHl6scWYM7Pzo0j0aMGX7g",
+          "Authorization": "Bearer " + jwtToken,
         },
       );
       result = jsonDecode(response.body);
@@ -138,7 +144,7 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> getAdminData(jwtToken) async {
+  Future<dynamic> getAdminData(String jwtToken) async {
     String endPoint = '/admin/info';
     String finalUrl = baseUrl + endPoint;
     /* Map<String, dynamic> loginDetails = {
@@ -150,8 +156,7 @@ class DataBaseMethods {
       final response = await http.get(
         Uri.parse(finalUrl),
         headers: {
-          "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImpMd1BPeEhWIiwiaWF0IjoxNjUzMzkyMjUyfQ.hXj5fa-XZuHQZ5_Vga2JYiaUCpHb7UfDVOP4XdvvQ7Y",
+          "Authorization": "Bearer " + jwtToken,
         },
       );
       result = jsonDecode(response.body);

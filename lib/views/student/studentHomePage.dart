@@ -39,6 +39,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     personalNumber = results['personalNumber'];
     guardianNumber = results['guardianNumber'];
     roomNo = results['roomNo'].toString();
+    collegeName = results['collegeName'];
     // curStudent.isBlank
   }
 
@@ -59,22 +60,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
         title: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text(
-              'Welcome',
-              style: GoogleFonts.outfit(
-                color: Colors.black,
-                fontSize: 32,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+            FittedBox(
               child: Text(
-                name,
+                'Welcome\n' + name,
                 style: GoogleFonts.outfit(
-                  // fontFamily: 'Outfit',
                   color: Colors.black,
-                  fontSize: 32,
+                  // fontSize: ,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -112,7 +103,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      'Purulia Government Engineering College',
+                      collegeName,
                       style: GoogleFonts.outfit(
                         // fontFamily: 'Outfit',
                         color: Color(0xFF57636C),

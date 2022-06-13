@@ -34,7 +34,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   }
 
   getAdminData() async {
-    final results = await dataBaseMethods.getAdminData(widget.adminToken);
+    final results = await dataBaseMethods.getAdminData(widget.adminToken.jwtToken);
     vegStudents = await results["vegCount"].toString();
     nonVegStudents = await results["nonVegCount"].toString();
     final studentDatafromServer = await results['studentInfo'];
