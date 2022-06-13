@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hostel_mangement_system/helper/shared_preferences.dart';
 import 'package:hostel_mangement_system/utils/colors.dart';
-import 'package:hostel_mangement_system/views/landing_page.dart';
 import 'package:hostel_mangement_system/views/splashScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
 }

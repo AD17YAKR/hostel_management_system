@@ -355,7 +355,13 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(isPresent ? "Present" : "Absent")
+                  Text(
+                    isPresent ? "Present" : "Absent",
+                    style: TextStyle(
+                      color: isPresent ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
                 ],
               ),
             ),

@@ -31,7 +31,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
     else {
-     /*  helperFunctions.saveAdminToken(jwtToken); */
+      /*  helperFunctions.saveAdminToken(jwtToken); */
       return Get.to(() => AdminHomePage(
             adminToken:
                 Token(jwtToken: jwtToken, idNumber: idNoController.text),
@@ -176,7 +176,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
-                            keyboardType: TextInputType.number,
+                            // keyboardType: TextInputType.number,
                           ),
                         ),
                       ),

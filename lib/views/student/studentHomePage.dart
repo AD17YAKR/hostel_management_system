@@ -35,7 +35,6 @@ class _StudentHomePageState extends State<StudentHomePage> {
     });
     final results = await dataBaseMethods.getStudentData(widget.jwtToken);
     name = results['name'];
-    // print(namessss);
     isVeg = results['foodPrefarence'] == "veg" ? true : false;
     isPresent = results['presentStatus'] == "present" ? true : false;
     personalNumber = results['personalNumber'];
@@ -58,7 +57,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? CircularProgressIndicator()
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
+            ),
+          )
         : Scaffold(
             key: scaffoldKey,
             appBar: AppBar(

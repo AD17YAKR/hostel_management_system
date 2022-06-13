@@ -6,13 +6,15 @@ Map<String, String> headersMap = {
   // 'Authorization': ,
 };
 
-//4CgEC5y0
 class DataBaseMethods {
   String baseUrl = "http://192.168.182.246:3000";
 
 //
 //
 
+//Admin Calls Start from here
+
+//Admin registration
   Future<dynamic> registerAdmin(String clgName, String hostelName,
       String password, String confirmPassword) async {
     String endPoint = '/admin';
@@ -38,6 +40,7 @@ class DataBaseMethods {
     }
   }
 
+//Admin Login
   Future<dynamic> loginAdmin(String id, String password) async {
     String endPoint = '/admin/login';
     String finalUrl = baseUrl + endPoint;
@@ -62,6 +65,35 @@ class DataBaseMethods {
     }
   }
 
+//Admin Dashboard Data Fetch
+  Future<dynamic> getAdminData(String jwtToken) async {
+    String endPoint = '/admin/info';
+    String finalUrl = baseUrl + endPoint;
+    /* Map<String, dynamic> loginDetails = {
+      "personalNumber": "6290949425",
+      "password": "password"
+    }; */
+    var result;
+    try {
+      final response = await http.get(
+        Uri.parse(finalUrl),
+        headers: {
+          "Authorization": "Bearer " + jwtToken,
+        },
+      );
+      result = jsonDecode(response.body);
+      // print("Over here");
+      // print(result);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
+//Student Calls Start from Here
+
+//Student Registraing API
   Future<dynamic> registerStudent(
     String name,
     String phoneNumber,
@@ -96,44 +128,7 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> changeFoodType(bool isVeg, String jwtToken) async {
-    String endPoint = '/student';
-    String finalUrl = baseUrl + endPoint;
-    String foodType = isVeg ? "veg" : "nonVeg";
-    var result;
-    try {
-      final response = await http.put(
-        Uri.parse(finalUrl),
-        body: {"foodPrefarence": foodType},
-        headers: {"Authorization": "Bearer " + jwtToken},
-      );
-      result = jsonDecode(response.body);
-      // print(result);
-      return result;
-    } catch (e) {
-      print(e);
-      return "Not Working";
-    }
-  }
-
-  Future<dynamic> attendanceStatus(bool isPresent, String jwtToken) async {
-    String endPoint = '/student';
-    String finalUrl = baseUrl + endPoint;
-    String attendance = isPresent ? "present" : "absent";
-    var result;
-    try {
-      final response = await http.put(
-        Uri.parse(finalUrl),
-        body: {"presentStatus": attendance},
-        headers: {"Authorization": "Bearer " + jwtToken},
-      );
-      result = jsonDecode(response.body);
-      return result;
-    } catch (e) {
-      print(e);
-      return "Not Working";
-    }
-  }
+//Student Login Calls
 
   Future<dynamic> logInStudent(String phoneNumber, String password) async {
     String endPoint = '/student/login';
@@ -158,13 +153,10 @@ class DataBaseMethods {
     }
   }
 
+//Student Dashboard Data Fetch
   Future<dynamic> getStudentData(String jwtToken) async {
     String endPoint = '/student';
     String finalUrl = baseUrl + endPoint;
-    /*   Map<String, dynamic> loginDetails = {
-      "personalNumber": "6290949425",
-      "password": "password"
-    }; */
     var result;
     try {
       final response = await http.get(
@@ -184,24 +176,46 @@ class DataBaseMethods {
     }
   }
 
-  Future<dynamic> getAdminData(String jwtToken) async {
-    String endPoint = '/admin/info';
+//Student Food Preferance Update
+  Future<dynamic> changeFoodType(bool isVeg, String jwtToken) async {
+    String endPoint = '/student';
     String finalUrl = baseUrl + endPoint;
-    /* Map<String, dynamic> loginDetails = {
-      "personalNumber": "6290949425",
-      "password": "password"
-    }; */
+    String foodType = isVeg ? "veg" : "nonVeg";
     var result;
     try {
-      final response = await http.get(
+      final response = await http.put(
         Uri.parse(finalUrl),
+        body: jsonEncode({"foodPrefarence": foodType}),
         headers: {
           "Authorization": "Bearer " + jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8'
         },
       );
       result = jsonDecode(response.body);
-      // print("Over here");
       // print(result);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
+//Student attendace Status
+  Future<dynamic> attendanceStatus(bool isPresent, String jwtToken) async {
+    String endPoint = '/student';
+    String finalUrl = baseUrl + endPoint;
+    String attendance = isPresent ? "present" : "absent";
+    var result;
+    try {
+      final response = await http.put(
+        Uri.parse(finalUrl),
+        body: jsonEncode({"presentStatus": attendance}),
+        headers: {
+          "Authorization": "Bearer " + jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+      result = jsonDecode(response.body);
       return result;
     } catch (e) {
       print(e);
