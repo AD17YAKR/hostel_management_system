@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hostel_mangement_system/helper/shared_preferences.dart';
 import 'package:hostel_mangement_system/models/token.dart';
 import 'package:hostel_mangement_system/services/database.dart';
 import 'package:hostel_mangement_system/views/admin/adminHomePage.dart';
@@ -17,6 +18,7 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController idNoController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  HelperFunctions helperFunctions = HelperFunctions();
   bool passwordVisibility = false;
   DataBaseMethods dataBaseMethods = DataBaseMethods();
   loginAdmin() async {
@@ -28,11 +30,13 @@ class _AdminLogInSignInState extends State<AdminLogInSignIn> {
     String jwtToken = results['jwtToken'] ?? "failed";
     if (jwtToken == "failed")
       return Get.snackbar("", "Some Values missing");
-    else
+    else {
+     /*  helperFunctions.saveAdminToken(jwtToken); */
       return Get.to(() => AdminHomePage(
             adminToken:
                 Token(jwtToken: jwtToken, idNumber: idNoController.text),
           ));
+    }
     // print(jwtToken);
   }
 

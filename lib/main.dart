@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hostel_mangement_system/helper/shared_preferences.dart';
 import 'package:hostel_mangement_system/utils/colors.dart';
 import 'package:hostel_mangement_system/views/landing_page.dart';
+import 'package:hostel_mangement_system/views/splashScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LandingPage(),
+      home: SplashScreenView(),
       theme: ThemeData(
         primaryColor: Colors.grey,
         appBarTheme: AppBarTheme(color: Colors.teal),

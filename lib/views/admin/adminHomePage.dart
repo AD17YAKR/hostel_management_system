@@ -25,8 +25,9 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   DataBaseMethods dataBaseMethods = DataBaseMethods();
   String vegStudents = "";
   String nonVegStudents = "";
-
-  List<Student> studentData = [];
+  var studentDatafromServer;
+  bool isLoading = false;
+  // List<Student> studentData = [];
   @override
   void initState() {
     super.initState();
@@ -34,11 +35,18 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
   }
 
   getAdminData() async {
-    final results = await dataBaseMethods.getAdminData(widget.adminToken.jwtToken);
+    setState(() {
+      isLoading = true;
+    });
+    final results =
+        await dataBaseMethods.getAdminData(widget.adminToken.jwtToken);
     vegStudents = await results["vegCount"].toString();
     nonVegStudents = await results["nonVegCount"].toString();
-    final studentDatafromServer = await results['studentInfo'];
-    for (int i = 0; i <=studentDatafromServer.length; i++) {
+    studentDatafromServer = await results['studentInfo'];
+    setState(() {
+      isLoading = false;
+    });
+    /* for (int i = 0; i <=studentDatafromServer.length; i++) {
       studentData[i].name = studentDatafromServer['name'];
       studentData[i].roomNo = studentDatafromServer['roomNo'].toString();
       studentData[i].guardianNumber =
@@ -46,48 +54,50 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
       studentData[i].personalNumber = studentDatafromServer['personalNumber'];
       studentData[i].isVeg = studentDatafromServer['foodPrefarence'] == "veg";
       studentData[i].isPresent = studentDatafromServer['present'] == "present";
-    }
-    // print(studentDatas.length);
+    } */
+    // print(studentDatafromServer.length);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Color(0xFFF1F4F8),
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Welcome Admin',
-          style: GoogleFonts.outfit(
-            color: Color(0xFF0F1113),
-            fontSize: 32,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-            child: IconButton(
-              icon: Icon(
-                Icons.logout,
-                color: Color(0xFF57636C),
-                size: 24,
+    return isLoading
+        ? CircularProgressIndicator()
+        : Scaffold(
+            key: scaffoldKey,
+            appBar: AppBar(
+              backgroundColor: Color(0xFFF1F4F8),
+              automaticallyImplyLeading: false,
+              title: Text(
+                'Welcome Admin',
+                style: GoogleFonts.outfit(
+                  color: Color(0xFF0F1113),
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              onPressed: () async {
-                Get.offAll(LandingPage());
-              },
+              actions: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      color: Color(0xFF57636C),
+                      size: 24,
+                    ),
+                    onPressed: () async {
+                      Get.offAll(LandingPage());
+                    },
+                  ),
+                ),
+              ],
+              centerTitle: false,
+              elevation: 0,
             ),
-          ),
-        ],
-        centerTitle: false,
-        elevation: 0,
-      ),
-      backgroundColor: Color(0xFFF1F4F8),
-      body: Column(
-        // mainAxisSize: MainAxisSize.max,
-        children: [
-          /*  Padding(
+            backgroundColor: Color(0xFFF1F4F8),
+            body: Column(
+              // mainAxisSize: MainAxisSize.max,
+              children: [
+                /*  Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -103,7 +113,7 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
               ],
             ),
           ), */
-          /*  Padding(
+                /*  Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -119,104 +129,108 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
               ],
             ),
           ), */
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  'Id Number : ' + widget.adminToken.idNumber,
-                  style: GoogleFonts.outfit(
-                    color: Color(0xFF57636C),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        'Id Number : ' + widget.adminToken.idNumber,
+                        style: GoogleFonts.outfit(
+                          color: Color(0xFF57636C),
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 7, 16, 2),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        'VEG Students Present : ',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.outfit(
+                          color: Colors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Text(
+                        vegStudents,
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.outfit(
+                          // fontFamily: 'Outfit',
+                          color: Colors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 2, 16, 5),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        'NON-VEG Students Present : ',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.outfit(
+                          color: Color(0xFFFF0000),
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Text(
+                        nonVegStudents,
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.outfit(
+                          // fontFamily: 'Outfit',
+                          color: Color(0xFFFF0000),
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (studentDatafromServer.length != 0)
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: studentDatafromServer.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 10,
+                        );
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return StudentCard(studentDatafromServer[index]);
+                      },
+                    ),
+                  ),
               ],
             ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 7, 16, 2),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  'VEG Students Present : ',
-                  textAlign: TextAlign.start,
-                  style: GoogleFonts.outfit(
-                    color: Colors.green,
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  vegStudents,
-                  textAlign: TextAlign.start,
-                  style: GoogleFonts.outfit(
-                    // fontFamily: 'Outfit',
-                    color: Colors.green,
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 2, 16, 5),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  'NON-VEG Students Present : ',
-                  textAlign: TextAlign.start,
-                  style: GoogleFonts.outfit(
-                    color: Color(0xFFFF0000),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  nonVegStudents,
-                  textAlign: TextAlign.start,
-                  style: GoogleFonts.outfit(
-                    // fontFamily: 'Outfit',
-                    color: Color(0xFFFF0000),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.separated(
-              itemCount: studentData.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 10,
-                );
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return StudentCard(studentData[index]);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
-  Widget StudentCard(Student students) {
-    print(students);
-    String? name = students.name ?? "Error";
-    bool? isVeg = students.isVeg ?? false;
-    String? personalNumber = students.personalNumber ?? "Error";
-    String? guardianNumber = students.guardianNumber ?? "Error";
-    String? roomNo = students.roomNo ?? "Error";
+  Widget StudentCard(var student) {
+    print(student);
+    String? name = student['name'] ?? "Error";
+    bool? isVeg =
+        student['foodPrefarence'].toString().toUpperCase() == "VEG" ?? false;
+    String? personalNumber = student['personalNumber'] ?? "Error";
+    String? guardianNumber = student['guardianNumber'] ?? "Error";
+    int? roomNo = student['roomNo'] ?? 0;
+    bool? isPresent = student['presentStatus'] == "present" ? true : false;
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
       child: Container(
+        padding: EdgeInsets.all(5),
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -229,133 +243,78 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
           ],
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: GoogleFonts.outfit(
-                          // fontFamily: 'Outfit',
-                          color: Colors.green,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
-                            child: AutoSizeText(
-                              'Personal No. -',
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.outfit(
-                                // fontFamily: 'Outfit',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
-                            child: AutoSizeText(
-                              personalNumber,
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.outfit(
-                                // fontFamily: 'Outfit',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
-                            child: AutoSizeText(
-                              'Guardian No. -',
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.outfit(
-                                // fontFamily: 'Outfit',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
-                            child: AutoSizeText(
-                              guardianNumber,
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.outfit(
-                                // fontFamily: 'Outfit',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 16, 0, 4),
-                      child: Text(
-                        isVeg ? 'VEG' : "NON - VEG",
-                        style: GoogleFonts.raleway(
-                          // fontFamily: 'Raleway',
-                          color: isVeg ? Colors.green : Colors.red,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                        ),
+                    Text(
+                      name!,
+                      style: GoogleFonts.outfit(
+                        // fontFamily: 'Outfit',
+                        color: Colors.green,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
                       ),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
-                          child: Text(
-                            'Room No. - ',
-                            textAlign: TextAlign.end,
-                            style: GoogleFonts.outfit(
-                              // fontFamily: 'Outfit',
-                              color: Color(0xFF0F1113),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
+                        AutoSizeText(
+                          'Personal No. - ',
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.outfit(
+                            // fontFamily: 'Outfit',
+                            color: Color(0xFF57636C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                          child: Text(
-                            roomNo,
+                        AutoSizeText(
+                          personalNumber!,
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.outfit(
+                            // fontFamily: 'Outfit',
+                            color: Color(0xFF57636C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        AutoSizeText(
+                          'Guardian No. -',
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.outfit(
+                            // fontFamily: 'Outfit',
+                            color: Color(0xFF57636C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        AutoSizeText(
+                          guardianNumber!,
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.outfit(
+                            // fontFamily: 'Outfit',
+                            color: Color(0xFF57636C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ],
@@ -363,8 +322,44 @@ class AdminLogInSignUpState extends State<AdminHomePage> {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    isVeg ? 'VEG' : "NON - VEG",
+                    style: GoogleFonts.raleway(
+                      // fontFamily: 'Raleway',
+                      color: isVeg ? Colors.green : Colors.red,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Room No. - ' + roomNo!.toString(),
+                    textAlign: TextAlign.end,
+                    style: GoogleFonts.outfit(
+                      // fontFamily: 'Outfit',
+                      color: Color(0xFF0F1113),
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(isPresent ? "Present" : "Absent")
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

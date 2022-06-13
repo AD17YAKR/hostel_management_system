@@ -12,6 +12,7 @@ class DataBaseMethods {
 
 //
 //
+
   Future<dynamic> registerAdmin(String clgName, String hostelName,
       String password, String confirmPassword) async {
     String endPoint = '/admin';
@@ -95,6 +96,45 @@ class DataBaseMethods {
     }
   }
 
+  Future<dynamic> changeFoodType(bool isVeg, String jwtToken) async {
+    String endPoint = '/student';
+    String finalUrl = baseUrl + endPoint;
+    String foodType = isVeg ? "veg" : "nonVeg";
+    var result;
+    try {
+      final response = await http.put(
+        Uri.parse(finalUrl),
+        body: {"foodPrefarence": foodType},
+        headers: {"Authorization": "Bearer " + jwtToken},
+      );
+      result = jsonDecode(response.body);
+      // print(result);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
+  Future<dynamic> attendanceStatus(bool isPresent, String jwtToken) async {
+    String endPoint = '/student';
+    String finalUrl = baseUrl + endPoint;
+    String attendance = isPresent ? "present" : "absent";
+    var result;
+    try {
+      final response = await http.put(
+        Uri.parse(finalUrl),
+        body: {"presentStatus": attendance},
+        headers: {"Authorization": "Bearer " + jwtToken},
+      );
+      result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      print(e);
+      return "Not Working";
+    }
+  }
+
   Future<dynamic> logInStudent(String phoneNumber, String password) async {
     String endPoint = '/student/login';
     String finalUrl = baseUrl + endPoint;
@@ -160,8 +200,8 @@ class DataBaseMethods {
         },
       );
       result = jsonDecode(response.body);
-      print("Over here");
-      print(result);
+      // print("Over here");
+      // print(result);
       return result;
     } catch (e) {
       print(e);
